@@ -80,3 +80,18 @@ def test_spot_check_bfloat16():
     assert np.isinf(dec(0x7F80))
     assert np.isnan(dec(0x7F81))
     assert np.isnan(dec(0x7FFF))
+
+
+@pytest.mark.parametrize(
+    "fmt,npfmt",
+    [
+        (format_info_binary16, np.float16),
+        (format_info_bfloat16, ml_dtypes.bfloat16),
+    ],
+)
+def test_float16s(fmt, npfmt):
+    npivals = np.arange(0xFFFF, dtype=np.uint16)
+    npfvals = npivals.view(dtype=npfmt)
+    for i, npfval in zip(npivals, npfvals):
+        val = decode_float(fmt, int(i))
+        np.testing.assert_equal(val.fval, npfval)
