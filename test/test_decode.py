@@ -7,8 +7,8 @@ from gfloat.formats import *
 
 def test_spot_check_ocp_e5m2():
     fi = format_info_ocp_e5m2
-    dec = lambda ival: decode_float(ival, fi).fval
-    fclass = lambda ival: decode_float(ival, fi).fclass
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
     assert dec(0x01) == 2.0**-16
     assert dec(0x40) == 2.0
     assert dec(0x80) == 0.0 and np.signbit(dec(0x80))
@@ -23,8 +23,8 @@ def test_spot_check_ocp_e5m2():
 
 def test_spot_check_ocp_e4m3():
     fi = format_info_ocp_e4m3
-    dec = lambda ival: decode_float(ival, fi).fval
-    fclass = lambda ival: decode_float(ival, fi).fclass
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
     assert dec(0x40) == 2.0
     assert dec(0x01) == 2.0**-9
     assert dec(0x80) == 0.0 and np.signbit(dec(0x80))
@@ -35,8 +35,8 @@ def test_spot_check_ocp_e4m3():
 
 def test_spot_check_p3109_p3():
     fi = format_info_p3109(3)
-    dec = lambda ival: decode_float(ival, fi).fval
-    fclass = lambda ival: decode_float(ival, fi).fclass
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
     assert dec(0x01) == 2.0**-17
     assert dec(0x40) == 1.0
     assert np.isnan(dec(0x80))
@@ -44,10 +44,21 @@ def test_spot_check_p3109_p3():
     assert np.floor(np.log2(dec(0x7E))) == fi.emax
 
 
+def test_spot_check_p3109_p1():
+    fi = format_info_p3109(1)
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
+    assert dec(0x01) == 2.0**-62
+    assert dec(0x40) == 2.0
+    assert np.isnan(dec(0x80))
+    assert dec(0xFF) == -np.inf
+    assert np.floor(np.log2(dec(0x7E))) == fi.emax
+
+
 def test_spot_check_binary16():
     fi = format_info_binary16
-    dec = lambda ival: decode_float(ival, fi).fval
-    fclass = lambda ival: decode_float(ival, fi).fclass
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
     assert dec(0x3C00) == 1.0
     assert dec(0x3C01) == 1.0 + 2**-10
     assert dec(0x4000) == 2.0
@@ -60,8 +71,8 @@ def test_spot_check_binary16():
 
 def test_spot_check_bfloat16():
     fi = format_info_bfloat16
-    dec = lambda ival: decode_float(ival, fi).fval
-    fclass = lambda ival: decode_float(ival, fi).fclass
+    dec = lambda ival: decode_float(fi, ival).fval
+    fclass = lambda ival: decode_float(fi, ival).fclass
     assert dec(0x3F80) == 1
     assert dec(0x4000) == 2
     assert dec(0x0001) == 2**-133

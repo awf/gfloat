@@ -4,15 +4,36 @@ from enum import Enum
 
 @dataclass
 class FormatInfo:
+    """
+    Class describing a floating-point format, parametrized
+    by width, precision, and special value encoding rules.
+    """
+
     name: str
-    k: int  # number of bits in the format
-    precision: int  # number of significand bits (including implicit leading bit)
-    emax: int  # Largest exponent, emax = floor(log_2(maxFinite))
-    has_nz: bool  # Set if format encodes -0 at sgn=1,exp=0,significand=0
-    # if not, that encoding decodes to a NaN labelled NaN_0
-    has_infs: bool  # Set if format encodes +/- Infinity.
-    # If set, the highest [lowest] non-nan value is replaced by +Inf [-Inf]
-    num_high_nans: bool  # Number of NaNs are encoded in the highest encoding slots (+/-)
+    """Short name for the format, e.g. binary32, bfloat16"""
+
+    k: int
+    """Number of bits in the format"""
+
+    precision: int
+    """Number of significand bits (including implicit leading bit)"""
+
+    emax: int
+    """Largest exponent, emax = floor(log_2(maxFinite))"""
+
+    has_nz: bool
+    """Set if format encodes -0 at sgn=1,exp=0,significand=0
+    If False, that encoding decodes to a NaN labelled NaN_0"""
+
+    has_infs: bool
+    """Set if format includes +/- Infinity.
+    If set, the non-nan value with the highest encoding is replaced by +Inf [-Inf]
+    """
+
+    num_high_nans: int
+    """
+    Number of NaNs that are encoded in the highest encoding slots [+/-]
+    """
 
     @property
     def significandBits(self):
@@ -31,6 +52,7 @@ class FormatInfo:
     #     1_11111_01 = NaN_{-1}
     #     1_11111_10 = NaN_{-2}
     #     1_11111_11 = NaN_{-3}
+
     # e.g. for binary8{p=3,emax=32,Z1,I0,H1}:
     #     0_11111_10 = 448.0
     #     0_11111_11 = NaN_{+1}
@@ -60,10 +82,13 @@ class FloatValue:
     significand: int  # Significand as an integer
     fsignificand: float  # Significand as a float in the range [0,2)
     signbit: int  # Sign bit: 1 => negative, 0 => positive
-    signstr: str  # String representation of sign
     fclass: FloatClass  # See FloatClass
     fi: FormatInfo  # Backlink to FormatInfo
 
     # [Note 1]
     # Values are assumed to be exactly round-trippable to python float == float64.
     # This is true for all <64bit formats known in 2023.
+
+    @property
+    def signstr(self):
+        return "+" if self.signbit else "-"

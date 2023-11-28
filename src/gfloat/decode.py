@@ -3,7 +3,7 @@ from .types import FormatInfo, FloatValue, FloatClass
 import numpy as np
 
 
-def decode_float(i: int, fi: FormatInfo) -> FloatValue:
+def decode_float(fi: FormatInfo, i: int) -> FloatValue:
     k = fi.k
     p = fi.precision
     t = p - 1  # trailing significand field width
@@ -41,7 +41,6 @@ def decode_float(i: int, fi: FormatInfo) -> FloatValue:
     # valstr: string representation of value in base 10
     # If the representation does not roundtrip to the value,
     # it is preceded by a "~" to indicate "approximately equal to"
-    signstr = "-" if sign == -1 else "+"
     valstr = f"{val}"
     if len(valstr) > 14:
         valstr = f"{val:.8}"
@@ -94,7 +93,6 @@ def decode_float(i: int, fi: FormatInfo) -> FloatValue:
         significand,
         fsignificand,
         signbit,
-        signstr,
         fclass,
         fi,
     )
