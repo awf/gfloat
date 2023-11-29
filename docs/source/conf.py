@@ -16,7 +16,12 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.viewcode",
 ]
+
+autodoc_default_options = {
+    "member-order": "bysource",
+}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
@@ -25,10 +30,6 @@ intersphinx_mapping = {
 intersphinx_disabled_domains = ["std"]
 
 templates_path = ["_templates"]
-
-autodoc_default_options = {
-    "member-order": "bysource",
-}
 
 # -- Options for HTML output
 

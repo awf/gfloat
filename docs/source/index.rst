@@ -38,6 +38,15 @@ API
    :members:
 .. autofunction:: gfloat.decode_float
 
+Defined Formats
+===============
+
+.. autodata:: gfloat.formats.format_info_binary32
+.. autodata:: gfloat.formats.format_info_binary16
+.. autodata:: gfloat.formats.format_info_bfloat16
+.. autodata:: gfloat.formats.format_info_ocp_e5m2
+.. autodata:: gfloat.formats.format_info_ocp_e4m3
+.. autofunction:: gfloat.formats.format_info_p3109
 
 Index and Search
 ================
