@@ -96,7 +96,8 @@ def test_float16s(fmt, npfmt):
         val = decode_float(fmt, int(i))
         np.testing.assert_equal(val.fval, npfval)
 
+
 @pytest.mark.parametrize("v", [-1, 0x10000])
 def test_except(v):
     with pytest.raises(ValueError):
-      decode_float(format_info_binary16, v)
+        decode_float(format_info_binary16, v)

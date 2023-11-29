@@ -5,12 +5,12 @@ import numpy as np
 
 def decode_float(fi: FormatInfo, i: int) -> FloatValue:
     """
-    Given :py:class:`FormatInfo` and integer code point, decode to a :py:class:`FloatValue` 
+    Given :py:class:`FormatInfo` and integer code point, decode to a :py:class:`FloatValue`
 
     :param fi: Foating point format descriptor.
     :type fi: FormatInfo
 
-    :param i: Integer code point, in the range :math:`0 \le i < 2^{k}`, 
+    :param i: Integer code point, in the range :math:`0 \le i < 2^{k}`,
               where :math:`k` = ``fi.k``
     :type i: int
 

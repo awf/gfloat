@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 import numpy as np
 
+
 @dataclass
 class FormatInfo:
     """
@@ -58,6 +59,7 @@ class FloatClass(Enum):
     INFINITE = 4  # A: positive or negative infinity (+/-Inf)
     NAN = 5  #: Not a Number (NaN)
 
+
 @dataclass
 class FloatValue:
     """
@@ -65,12 +67,11 @@ class FloatValue:
     """
 
     ival: int  #: Integer code point
-    
-    
+
     #: Value. Assumed to be exactly round-trippable to python float.
     #: This is true for all <64bit formats known in 2023.
     fval: float
-    
+
     valstr: str  #: Value as string, assuming all code points finite
     exp: int  #: Raw exponent without bias
     expval: int  #: Exponent, bias subtracted
