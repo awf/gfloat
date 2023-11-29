@@ -19,3 +19,9 @@ class `FormatInfo`:
   has_nz: bool          # Set if format encodes -0 at sgn=1,exp=0,significand=0
                         # if not, that encoding decodes to a NaN labelled NaN_0
 ```
+
+## TODO:
+
+All NaNs are the same, with no distinction between signalling or quiet, 
+or between differently encoded NaNs.
+

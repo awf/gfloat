@@ -4,10 +4,28 @@ import numpy as np
 
 
 def decode_float(fi: FormatInfo, i: int) -> FloatValue:
+    """
+    Given :py:class:`FormatInfo` and integer code point, decode to a :py:class:`FloatValue` 
+
+    :param fi: Foating point format descriptor.
+    :type fi: FormatInfo
+
+    :param i: Integer code point, in the range :math:`0 \le i < 2^{k}`, 
+              where :math:`k` = ``fi.k``
+    :type i: int
+
+    :return: Decoded float value
+    :rtype: FloatValue
+
+    :raise ValueError: If i is outside the range of valid code points in fi.
+    """
     k = fi.k
     p = fi.precision
     t = p - 1  # trailing significand field width
     w = k - p
+
+    if i < 0 or i >= 2**k:
+        raise ValueError(f"Code point {i} not in range [0, 2**{k})")
 
     signmask = 1 << (k - 1)
     signbit = 1 if i & signmask else 0
