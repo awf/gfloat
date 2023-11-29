@@ -33,9 +33,8 @@ API
 .. autofunction:: gfloat.decode_float
 
 
-Indices and tables
-==================
+Index and Search
+================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
