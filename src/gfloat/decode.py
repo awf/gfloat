@@ -34,16 +34,7 @@ def decode_float(fi: FormatInfo, i: int) -> FloatValue:
     exp = (i & (signmask - 1)) >> t
     significand = i & ((1 << t) - 1)
 
-    # Calculate whether all of the all-bits-one-exponent values contain specials.
-    # If so, emax will be obtained for exponent value 2^w-2, otherwise it is 2^w-1
-    num_posinfs = 1 if fi.has_infs else 0
-    all_bits_one_full = (fi.num_high_nans + num_posinfs == 2 ** (p - 1)) or (
-        fi.has_infs and w == 0
-    )
-
-    # Compute exponent bias.
-    exp_for_emax = 2**w - (2 if all_bits_one_full else 1)
-    expBias = exp_for_emax - fi.emax
+    expBias = fi.expBias
 
     isnormal = exp != 0
     if isnormal:

@@ -47,6 +47,25 @@ class FormatInfo:
         """The number of exponent bits, w"""
         return self.k - self.precision
 
+    @property
+    def expBias(self):
+        """The exponent bias derived from (p,emax)
+
+        This is the bias that should be applied so that
+           :math:`floor(log_2(maxFinite)) = emax`
+        """
+        # Calculate whether all of the all-bits-one-exponent values contain specials.
+        # If so, emax will be obtained for exponent value 2^w-2, otherwise it is 2^w-1
+        t = self.tSignificandBits
+        num_posinfs = 1 if self.has_infs else 0
+        all_bits_one_full = (self.num_high_nans + num_posinfs == 2**t) or (
+            self.expBits == 0 and self.has_infs
+        )
+
+        # Compute exponent bias.
+        exp_for_emax = 2**self.expBits - (2 if all_bits_one_full else 1)
+        return exp_for_emax - self.emax
+
 
 class FloatClass(Enum):
     """
