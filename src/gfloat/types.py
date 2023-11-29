@@ -56,7 +56,7 @@ class FloatClass(Enum):
     NORMAL = 1  #: A positive or negative normalized non-zero value
     SUBNORMAL = 2  #: A positive or negative subnormal value
     ZERO = 3  #: A positive or negative zero value
-    INFINITE = 4  # A: positive or negative infinity (+/-Inf)
+    INFINITE = 4  #: A positive or negative infinity (+/-Inf)
     NAN = 5  #: Not a Number (NaN)
 
 
