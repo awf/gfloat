@@ -9,7 +9,6 @@ def round_float(fi: FormatInfo, v: float) -> float:
 
     Returns a float which exactly equals one of the code points.
     """
-    assert isinstance(v, float)
 
     # Constants
     k = fi.k
@@ -27,9 +26,20 @@ def round_float(fi: FormatInfo, v: float) -> float:
         else:
             return 0.0
 
-    fsignificand, expval = np.frexp(np.abs(v))
-    # fSignificand is in [0.5,1), so if normal, would be multiplied by 2 and expval reduced by 1
+    if np.isnan(v):
+        if fi.num_nans == 0:
+            raise ValueError(f"No NaN in format {fi}")
+        return np.nan
 
+    if np.isinf(v):
+        if not fi.has_infs:
+            raise ValueError(f"No Infs in format {fi}")
+        return v
+
+    fsignificand, expval = np.frexp(np.abs(v))
+
+    # fSignificand is in [0.5,1), so if normal,
+    # would be multiplied by 2 and expval reduced by 1
     fsignificand *= 2
     assert fsignificand >= 1.0 and fsignificand < 2.0
     expval -= 1

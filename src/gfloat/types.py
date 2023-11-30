@@ -66,6 +66,11 @@ class FormatInfo:
         exp_for_emax = 2**self.expBits - (2 if all_bits_one_full else 1)
         return exp_for_emax - self.emax
 
+    @property
+    def num_nans(self):
+        """The number of code points which decode to NaN"""
+        return (0 if self.has_nz else 1) + 2 * self.num_high_nans
+
 
 class FloatClass(Enum):
     """
